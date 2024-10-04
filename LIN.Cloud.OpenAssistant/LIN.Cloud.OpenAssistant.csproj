@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SILF\SILF\SILF.Script\SILF.Script.csproj" />
+    <ProjectReference Include="..\..\..\AccesoAPI\LIN.Access.Auth\LIN.Access.Auth.csproj" />
+    <ProjectReference Include="..\..\..\AccesoAPI\LIN.Access.OpenIA\LIN.Access.OpenIA.csproj" />
+    <ProjectReference Include="..\..\..\Tipos\Http\Http.csproj" />
+    <ProjectReference Include="..\LIN.Cloud.OpenAssistant.Persistence\LIN.Cloud.OpenAssistant.Persistence.csproj" />
+    <ProjectReference Include="..\LIN.Types.Cloud.OpenAssistant\LIN.Types.Cloud.OpenAssistant.csproj" />
+  </ItemGroup>
+
+</Project>
