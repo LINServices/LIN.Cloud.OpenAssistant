@@ -25,7 +25,7 @@ public class Context(ProfileModel profile)
     /// <param name="token">Token de acceso.</param>
     /// <param name="prompt">Entrada del usuario.</param>
     /// <param name="appLocal">App local.</param>
-    public async Task<bool> Reply(string token, string prompt, string appLocal, Profiles profileService, out string endResult)
+    public async Task<(bool isSuccess, string response)> Reply(string token, string prompt, string appLocal, Profiles profileService)
     {
 
         // Obtener modelo.
@@ -43,13 +43,10 @@ public class Context(ProfileModel profile)
         // Responder.
         var response = await modelBuilder.Reply();
 
-        // Hubó un error.
+        // Hubo un error.
         if (!response.IsSuccess)
-        {
-            endResult = "";
-            return false;
-        }
-
+            return (false, "");
+        
         // Validaciones.
         if (response.Content.StartsWith('"') && response.Content.EndsWith('"') && response.Content.Length > 2 && response.Content[1] == '#')
         {
@@ -71,15 +68,12 @@ public class Context(ProfileModel profile)
 
             // Agregar a la lista de mensajes.
             Messages.Add(Message.FromAssistant(result));
-
-            endResult = result;
-            return true;
+            return (true, result);
         }
 
         // Agregar mensaje del asistente.
         Messages.Add(Message.FromAssistant(response.Content));
-        endResult = response.Content;
-        return true;
+        return (true, response.Content);
     }
 
 }
