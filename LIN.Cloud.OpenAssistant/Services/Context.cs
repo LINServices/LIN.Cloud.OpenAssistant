@@ -57,7 +57,7 @@ public class Context(ProfileModel profile)
             var silfApp = new SILF.Script.App(response.Content.Remove(0, 1));
 
             // Agregar métodos.
-            silfApp.AddDefaultFunctions(Scripts.Build(token, ProfileModel.Id, prompt, appLocal, profileService));
+            silfApp.AddDefaultFunctions(Scripts.Build(token, ProfileModel.Id, prompt, appLocal, profileService, this));
 
             // Obtener data.
             var result = silfApp.RunProfit()?.ToString() ?? "";

@@ -47,7 +47,7 @@ public class Scripts
     /// <summary>
     /// Construye las funciones
     /// </summary>
-    public static List<IFunction> Build(string token, int profile, string prompt, string app, Profiles profiles)
+    public static List<IFunction> Build(string token, int profile, string prompt, string app, Profiles profiles, Context context)
     {
 
         // Acciones.
@@ -100,8 +100,7 @@ public class Scripts
             Access.OpenIA.IAModelBuilder iaBuilder = new();
 
             // Agregar mensajes.
-            iaBuilder.Load(Message.FromSystem(appResponse));
-            iaBuilder.Load(Message.FromUser(prompt));
+            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.Take(5), Message.FromUser(prompt)]);
 
             // Esperar respuesta.
             var reply = iaBuilder.Reply();
