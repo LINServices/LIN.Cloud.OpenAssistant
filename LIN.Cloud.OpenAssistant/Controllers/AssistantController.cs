@@ -2,6 +2,7 @@
 using LIN.Cloud.OpenAssistant.Services;
 using LIN.Types.Cloud.OpenAssistant.Api;
 using LIN.Types.Cloud.OpenAssistant.Models;
+using LIN.Types.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LIN.Cloud.OpenAssistant.Controllers;
@@ -17,7 +18,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     /// <param name="request">Request.</param>
     /// <param name="token">Token de acceso.</param>
     [HttpPost]
-    public async Task<dynamic> Assistant([FromBody] AssistantRequest request, [FromHeader] string token)
+    public async Task<ReadOneResponse<AssistantResponse>> Assistant([FromBody] AssistantRequest request, [FromHeader] string token)
     {
 
         // Obtener datos de autenticación.
@@ -25,7 +26,11 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
 
         // Validar.
         if (authData.Response != Types.Responses.Responses.Success)
-            return new { };
+            return new()
+            {
+                Response = Responses.Unauthorized,
+                Message = "No tienes autorización."
+            };
 
         // Obtener perfil.
         var profile = await profilesData.ReadByAccount(authData.Model.Id);
@@ -47,7 +52,10 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
 
             // Validar.
             if (response.Response != Types.Responses.Responses.Success)
-                return new{};
+                return new()
+                {
+                    Response = Responses.Undefined,
+                };
 
             model.Id = response.LastID;
             profile.Model = model;
@@ -57,11 +65,15 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         Context context = contextManager.GetOrCreate(profile.Model);
 
         // Responder.
-        string emmaResponse = await context.Reply(token, request.Prompt, request.App, profilesData);
+        bool isSuccess = await context.Reply(token, request.Prompt, request.App, profilesData, out string responseEmma);
 
-        return new
+        return new()
         {
-            Result = emmaResponse
+            Response = isSuccess ? Responses.Success : Responses.Undefined,
+            Model = new()
+            {
+                Content = responseEmma
+            }
         };
 
     }
