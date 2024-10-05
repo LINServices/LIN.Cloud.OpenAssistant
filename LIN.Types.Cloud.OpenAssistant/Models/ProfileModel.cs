@@ -1,6 +1,5 @@
 ﻿namespace LIN.Types.Cloud.OpenAssistant.Models;
 
-
 public class ProfileModel
 {
     public int Id { get; set; }

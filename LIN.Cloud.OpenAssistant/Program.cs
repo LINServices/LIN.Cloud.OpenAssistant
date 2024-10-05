@@ -20,6 +20,9 @@ app.MapControllers();
 app.UseLINHttp();
 app.UseDataBase();
 
+// Limite.
+app.UseRateTokenLimit(7, TimeSpan.FromMinutes(1));
+
 LIN.Access.OpenIA.OpenIA.SetKey(builder.Configuration["OpenIA:Key"] ?? "");
 
 app.Run();
