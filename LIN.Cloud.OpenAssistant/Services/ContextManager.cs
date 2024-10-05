@@ -18,9 +18,10 @@ public class ContextManager
     public Context GetOrCreate(ProfileModel profile)
     {
 
+        // Obtener contexto.
         _context.TryGetValue(profile.Id, out var context);
 
-        if (context == null)
+        if (context is null)
         {
             context = new Context(profile);
             _context.Add(profile.Id, context);
@@ -29,6 +30,5 @@ public class ContextManager
         context.ProfileModel = profile;
         return context;
     }
-
 
 }

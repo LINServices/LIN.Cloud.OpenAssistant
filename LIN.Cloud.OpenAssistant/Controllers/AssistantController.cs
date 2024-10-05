@@ -54,10 +54,10 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         }
 
         // Obtener header.
-        var context = contextManager.GetOrCreate(profile.Model);
+        Context context = contextManager.GetOrCreate(profile.Model);
 
         // Responder.
-        var emmaResponse = await context.Reply(token, request.Prompt, request.App, profilesData);
+        string emmaResponse = await context.Reply(token, request.Prompt, request.App, profilesData);
 
         return new
         {
@@ -65,4 +65,5 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         };
 
     }
+
 }

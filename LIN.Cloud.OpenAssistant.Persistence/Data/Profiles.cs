@@ -39,7 +39,7 @@ public class Profiles(DataContext context)
                                  where p.AccountId == account
                                  select p).FirstOrDefaultAsync();
 
-            return profile == null ? new(Responses.NotExistProfile) : new(Responses.Success, profile);
+            return profile is null ? new(Responses.NotExistProfile) : new(Responses.Success, profile);
         }
         catch (Exception)
         {
