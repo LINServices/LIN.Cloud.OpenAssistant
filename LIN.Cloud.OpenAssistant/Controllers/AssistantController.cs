@@ -65,7 +65,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         Context context = contextManager.GetOrCreate(profile.Model);
 
         // Responder.
-        bool isSuccess = await context.Reply(token, request.Prompt, request.App, profilesData, out string responseEmma);
+        (bool isSuccess, string responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
 
         return new()
         {
