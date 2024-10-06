@@ -7,17 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Cloud.OpenAssistant", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Http", "..\..\Tipos\Http\Http.csproj", "{8AE2C51B-8BC9-4EF4-BA68-0DB476F3DB19}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Types.Cloud.OpenAssistant", "LIN.Types.Cloud.OpenAssistant\LIN.Types.Cloud.OpenAssistant.csproj", "{8F5778D2-FF66-4C8D-9F06-D1E13612DE87}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Cloud.OpenAssistant.Persistence", "LIN.Cloud.OpenAssistant.Persistence\LIN.Cloud.OpenAssistant.Persistence.csproj", "{D7A707E4-F129-4ECD-9B64-DED911E53144}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Types", "..\..\Tipos\LIN.Types\LIN.Types.csproj", "{2B1BA9ED-ED5E-4B13-9AF4-0081A97691D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Access.Auth", "..\..\AccesoAPI\LIN.Access.Auth\LIN.Access.Auth.csproj", "{24C31C21-05B5-4D0C-BDBE-9D93649D051A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LIN.Access.OpenIA", "..\..\AccesoAPI\LIN.Access.OpenIA\LIN.Access.OpenIA.csproj", "{DC64FB0E-4B84-41CE-8519-5C008A1C149C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SILF.Script", "..\..\..\SILF\SILF\SILF.Script\SILF.Script.csproj", "{3DA5D02D-04FA-4DE4-9DF6-0504FBF17660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,18 +27,10 @@ Global
 		{8AE2C51B-8BC9-4EF4-BA68-0DB476F3DB19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AE2C51B-8BC9-4EF4-BA68-0DB476F3DB19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AE2C51B-8BC9-4EF4-BA68-0DB476F3DB19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F5778D2-FF66-4C8D-9F06-D1E13612DE87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F5778D2-FF66-4C8D-9F06-D1E13612DE87}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F5778D2-FF66-4C8D-9F06-D1E13612DE87}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F5778D2-FF66-4C8D-9F06-D1E13612DE87}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7A707E4-F129-4ECD-9B64-DED911E53144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7A707E4-F129-4ECD-9B64-DED911E53144}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7A707E4-F129-4ECD-9B64-DED911E53144}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7A707E4-F129-4ECD-9B64-DED911E53144}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B1BA9ED-ED5E-4B13-9AF4-0081A97691D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B1BA9ED-ED5E-4B13-9AF4-0081A97691D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B1BA9ED-ED5E-4B13-9AF4-0081A97691D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B1BA9ED-ED5E-4B13-9AF4-0081A97691D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24C31C21-05B5-4D0C-BDBE-9D93649D051A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24C31C21-05B5-4D0C-BDBE-9D93649D051A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24C31C21-05B5-4D0C-BDBE-9D93649D051A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +39,6 @@ Global
 		{DC64FB0E-4B84-41CE-8519-5C008A1C149C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC64FB0E-4B84-41CE-8519-5C008A1C149C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC64FB0E-4B84-41CE-8519-5C008A1C149C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3DA5D02D-04FA-4DE4-9DF6-0504FBF17660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DA5D02D-04FA-4DE4-9DF6-0504FBF17660}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DA5D02D-04FA-4DE4-9DF6-0504FBF17660}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DA5D02D-04FA-4DE4-9DF6-0504FBF17660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

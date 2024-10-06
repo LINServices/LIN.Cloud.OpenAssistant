@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.12.0" />
+    <PackageReference Include="LIN.Types" Version="1.0.0" />
+    <PackageReference Include="LIN.Types.Cloud.OpenAssistant" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
     <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Tipos\LIN.Types\LIN.Types.csproj" />
-    <ProjectReference Include="..\LIN.Types.Cloud.OpenAssistant\LIN.Types.Cloud.OpenAssistant.csproj" />
   </ItemGroup>
 
 </Project>
