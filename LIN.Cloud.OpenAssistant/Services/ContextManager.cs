@@ -8,7 +8,7 @@ public class ContextManager
     /// <summary>
     /// Lista de contextos.
     /// </summary>
-    private Dictionary<int, Context> _context = [];
+    private readonly Dictionary<int, Context> _context = [];
 
 
     /// <summary>

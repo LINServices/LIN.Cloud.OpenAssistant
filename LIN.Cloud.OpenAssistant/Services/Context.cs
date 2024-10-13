@@ -43,10 +43,6 @@ public class Context(ProfileModel profile)
         // Responder.
         var response = await modelBuilder.Reply();
 
-        // Hubo un error.
-        if (!response.IsSuccess)
-            return (false, "");
-        
         // Validaciones.
         if (response.Content.StartsWith('"') && response.Content.EndsWith('"') && response.Content.Length > 2 && response.Content[1] == '#')
         {
