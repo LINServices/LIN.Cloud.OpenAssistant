@@ -37,4 +37,18 @@ public class ContextManager
         return context;
     }
 
+
+    /// <summary>
+    /// Obtener o crear un contexto.
+    /// </summary>
+    /// <param name="profile">Modelo del perfil.</param>
+    public void Delete(int profile)
+    {
+
+        // Obtener contexto.
+        _context.Remove(profile);
+
+    }
+
+
 }

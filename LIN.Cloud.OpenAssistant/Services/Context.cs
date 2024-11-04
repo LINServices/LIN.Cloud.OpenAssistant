@@ -1,6 +1,8 @@
 ﻿using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Types.Cloud.OpenAssistant.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace LIN.Cloud.OpenAssistant.Services;
 
@@ -67,17 +69,18 @@ public class Context(ProfileModel profile)
 
             var x2 = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(result);
 
-            if (!string.IsNullOrWhiteSpace(x2.UserText))
+            if (x2 != null && !string.IsNullOrWhiteSpace(x2.UserText))
             {
                 // Agregar a la lista de mensajes.
                 x.UserText = x2.UserText;
                 x.Commands.AddRange(x2.Commands);
             }
 
-            Messages.Add(Message.FromAssistant(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
+           
 
         }
 
+        Messages.Add(Message.FromAssistant(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
         x.Actions = [];
         return (true, x);
     }

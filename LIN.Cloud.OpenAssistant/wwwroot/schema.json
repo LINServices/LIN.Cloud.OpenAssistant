@@ -6,27 +6,27 @@
     "schema": {
       "type": "object",
       "properties": {
-        "user-text": {
+        "usertext": {
           "type": "string",
           "description": "Texto que le diras al usuario"
         },
         "commands": {
           "type": "array",
-          "description": "Lista de comandos que se van a ejecutar",
+          "description": "Lista de comandos que se van a ejecutar en formato string",
           "items": {
             "type": "string"
           }
         },
         "actions": {
           "type": "array",
-          "description": "Lista de acciones del servidor que se van a ejecutar",
+          "description": "Lista de acciones del servidor que se van a ejecutar solo en formato string",
           "items": {
             "type": "string"
           }
         }
       },
       "required": [
-        "user-text",
+        "usertext",
         "commands",
         "actions"
       ],

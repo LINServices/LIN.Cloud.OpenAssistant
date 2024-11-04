@@ -1,4 +1,5 @@
-﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
+﻿using LIN.Access.OpenIA.Models;
+using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services;
 using LIN.Types.Cloud.OpenAssistant.Api;
 using LIN.Types.Cloud.OpenAssistant.Models;
@@ -77,6 +78,77 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         {
             Response = isSuccess ? Responses.Success : Responses.Undefined,
             Model = responseEmma
+        };
+
+    }
+
+
+    /// <summary>
+    /// Asistente.
+    /// </summary>
+    /// <param name="request">Request.</param>
+    /// <param name="token">Token de acceso.</param>
+    [HttpPut]
+    public async Task<ResponseBase> Assistant([FromHeader] string token)
+    {
+
+        // Obtener datos de autenticación.
+        var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
+
+        // Validar.
+        if (authData.Response != Types.Responses.Responses.Success)
+            return new()
+            {
+                Response = Responses.Unauthorized,
+                Message = "No tienes autorización."
+            };
+
+        // Obtener perfil.
+        var profile = await profilesData.ReadByAccount(authData.Model.Id);
+
+        // Obtener header.
+        contextManager.Delete(profile.Model.Id);
+
+
+
+        return new()
+        {
+            Response = Responses.Success
+        };
+
+    }
+
+
+    /// <summary>
+    /// Asistente.
+    /// </summary>
+    /// <param name="request">Request.</param>
+    /// <param name="token">Token de acceso.</param>
+    [HttpGet]
+    public async Task<ReadAllResponse<Message>> Get([FromHeader] string token)
+    {
+
+        // Obtener datos de autenticación.
+        var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
+
+        // Validar.
+        if (authData.Response != Types.Responses.Responses.Success)
+            return new()
+            {
+                Response = Responses.Unauthorized,
+                Message = "No tienes autorización."
+            };
+
+        // Obtener perfil.
+        var profile = await profilesData.ReadByAccount(authData.Model.Id);
+
+        // Obtener header.
+        Context context = contextManager.GetOrCreate(profile.Model);
+
+        return new()
+        {
+            Response = Responses.Success,
+            Models = context.Messages
         };
 
     }
