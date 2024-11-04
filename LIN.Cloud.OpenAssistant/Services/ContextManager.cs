@@ -5,6 +5,9 @@ namespace LIN.Cloud.OpenAssistant.Services;
 public class ContextManager
 {
 
+    public static string Schema { get; set; } = "";
+
+
     /// <summary>
     /// Lista de contextos.
     /// </summary>
@@ -23,7 +26,10 @@ public class ContextManager
 
         if (context is null)
         {
-            context = new Context(profile);
+            context = new Context(profile)
+            {
+                Schema = Schema
+            };
             _context.Add(profile.Id, context);
         }
 

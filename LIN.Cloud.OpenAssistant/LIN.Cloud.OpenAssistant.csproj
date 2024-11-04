@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Http.Utils" Version="1.1.0" />
-    <PackageReference Include="LIN.Access.Auth" Version="1.2.0" />
+    <PackageReference Include="Http.Utils" Version="2.0.5" />
+    <PackageReference Include="LIN.Access.Auth" Version="1.3.4" />
+    <PackageReference Include="LIN.Access.OpenIA" Version="1.2.0" />
     <PackageReference Include="SILF.Script" Version="1.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AccesoAPI\LIN.Access.OpenIA\LIN.Access.OpenIA.csproj" />
     <ProjectReference Include="..\LIN.Cloud.OpenAssistant.Persistence\LIN.Cloud.OpenAssistant.Persistence.csproj" />
   </ItemGroup>
 

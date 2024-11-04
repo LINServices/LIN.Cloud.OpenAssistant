@@ -1,5 +1,7 @@
-﻿using LIN.Access.OpenIA.Models;
+﻿using Azure;
+using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
+using LIN.Types.Cloud.OpenAssistant.Models;
 using LIN.Types.Responses;
 using Newtonsoft.Json;
 using SILF.Script;
@@ -97,7 +99,10 @@ public class Scripts
             var appResponse = responseTask.Result.Model.ToString() ?? "";
 
             // Builder IA.
-            Access.OpenIA.IAModelBuilder iaBuilder = new();
+            Access.OpenIA.IAModelBuilder iaBuilder = new()
+            {
+                Schema = context.Schema
+            };
 
             // Agregar mensajes.
             iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.Take(5), Message.FromUser(prompt)]);
@@ -149,13 +154,7 @@ public class Scripts
             }
             return new FuncContext()
             {
-                WaitType = new("string"),
-                IsReturning = true,
-                Value = new SILFClassObject()
-                {
-                    Tipo = new("string"),
-                    Value = "Perfecto, información actualizada",
-                }
+                IsReturning = true
             };
         }
 
@@ -174,8 +173,7 @@ public class Scripts
             Parameters = [
                 new Parameter("type", new("string")),
                 new Parameter("value", new("string"))
-                ],
-            Type = new("string"),
+                ]
         }];
 
         return Actions;

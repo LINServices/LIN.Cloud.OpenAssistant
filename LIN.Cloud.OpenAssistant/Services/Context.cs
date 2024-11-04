@@ -18,6 +18,11 @@ public class Context(ProfileModel profile)
     /// </summary>
     public List<Message> Messages { get; set; } = [];
 
+    /// <summary>
+    /// Esquema
+    /// </summary>
+    public string Schema { get; set; } = "";
+
 
     /// <summary>
     /// Responder.
@@ -25,14 +30,17 @@ public class Context(ProfileModel profile)
     /// <param name="token">Token de acceso.</param>
     /// <param name="prompt">Entrada del usuario.</param>
     /// <param name="appLocal">App local.</param>
-    public async Task<(bool isSuccess, string response)> Reply(string token, string prompt, string appLocal, Profiles profileService)
+    public async Task<(bool isSuccess, EmmaSchemaResponse response)> Reply(string token, string prompt, string appLocal, Profiles profileService)
     {
 
         // Obtener modelo.
         string header = DynamicMessageManager.GetHeader(ProfileModel);
 
         // Model builder.
-        Access.OpenIA.IAModelBuilder modelBuilder = new();
+        Access.OpenIA.IAModelBuilder modelBuilder = new()
+        {
+            Schema = Schema
+        };
 
         // Agregar mensaje.
         Messages.Add(Message.FromUser(prompt));
@@ -43,18 +51,13 @@ public class Context(ProfileModel profile)
         // Responder.
         var response = await modelBuilder.Reply();
 
-        // Validaciones.
-        if (response.Content.StartsWith('"') && response.Content.EndsWith('"') && response.Content.Length > 2 && response.Content[1] == '#')
-        {
-            response.Content = response.Content.Remove(0, 1);
-            response.Content = response.Content[..^1];
-        }
+        // Parsear.
+        var x = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(response.Content);
 
-        // Si es un método servidor.
-        if (response.Content.StartsWith("#require", StringComparison.CurrentCultureIgnoreCase) || response.Content.StartsWith("#force", StringComparison.CurrentCultureIgnoreCase))
+        foreach (var e in x.Actions)
         {
             // Aplicación SILF.
-            var silfApp = new SILF.Script.App(response.Content.Remove(0, 1));
+            var silfApp = new SILF.Script.App(e);
 
             // Agregar métodos.
             silfApp.AddDefaultFunctions(Scripts.Build(token, ProfileModel.Id, prompt, appLocal, profileService, this));
@@ -62,14 +65,21 @@ public class Context(ProfileModel profile)
             // Obtener data.
             var result = silfApp.RunProfit()?.ToString() ?? "";
 
-            // Agregar a la lista de mensajes.
-            Messages.Add(Message.FromAssistant(result));
-            return (true, result);
+            var x2 = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(result);
+
+            if (!string.IsNullOrWhiteSpace(x2.UserText))
+            {
+                // Agregar a la lista de mensajes.
+                x.UserText = x2.UserText;
+                x.Commands.AddRange(x2.Commands);
+            }
+
+            Messages.Add(Message.FromAssistant(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
+
         }
 
-        // Agregar mensaje del asistente.
-        Messages.Add(Message.FromAssistant(response.Content));
-        return (true, response.Content);
+        x.Actions = [];
+        return (true, x);
     }
 
 }

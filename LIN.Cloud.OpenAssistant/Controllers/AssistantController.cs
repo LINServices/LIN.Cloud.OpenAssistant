@@ -18,7 +18,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     /// <param name="request">Request.</param>
     /// <param name="token">Token de acceso.</param>
     [HttpPost]
-    public async Task<ReadOneResponse<AssistantResponse>> Assistant([FromBody] AssistantRequest request, [FromHeader] string token)
+    public async Task<ReadOneResponse<EmmaSchemaResponse>> Assistant([FromBody] AssistantRequest request, [FromHeader] string token)
     {
 
         // Obtener datos de autenticación.
@@ -65,15 +65,18 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         Context context = contextManager.GetOrCreate(profile.Model);
 
         // Responder.
-        (bool isSuccess, string responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
+        (bool isSuccess, EmmaSchemaResponse responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
+
+
+        // Parsear.
+
+
+
 
         return new()
         {
             Response = isSuccess ? Responses.Success : Responses.Undefined,
-            Model = new()
-            {
-                Content = responseEmma
-            }
+            Model = responseEmma
         };
 
     }

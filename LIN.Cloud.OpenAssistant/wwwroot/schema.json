@@ -1,0 +1,36 @@
+﻿{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "prueba",
+    "strict": false,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "user-text": {
+          "type": "string",
+          "description": "Texto que le diras al usuario"
+        },
+        "commands": {
+          "type": "array",
+          "description": "Lista de comandos que se van a ejecutar",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "description": "Lista de acciones del servidor que se van a ejecutar",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "user-text",
+        "commands",
+        "actions"
+      ],
+      "additionalProperties": true
+    }
+  }
+}
