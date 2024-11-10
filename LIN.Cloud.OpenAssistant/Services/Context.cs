@@ -48,7 +48,7 @@ public class Context(ProfileModel profile)
         Messages.Add(Message.FromUser(prompt));
 
         // Cargar mensajes.
-        modelBuilder.Load([Message.FromSystem(header), .. Messages.TakeLast(10)]);
+        modelBuilder.Load([Message.FromSystem(header), .. Messages.TakeLast(5)]);
 
         // Responder.
         var response = await modelBuilder.Reply();
