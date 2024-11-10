@@ -69,8 +69,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         (bool isSuccess, EmmaSchemaResponse responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
 
 
-        // Parsear.
-
 
 
 

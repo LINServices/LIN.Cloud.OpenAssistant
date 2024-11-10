@@ -29,7 +29,7 @@ public class DynamicMessageManager
     private static string GetDataUser(ProfileModel profile)
     {
         // Armar datos de usuario.
-        string userData = $"""Eres Emma, el asistente personal del usuario '{profile.Alias}' """;
+        string userData = $"""Eres Emma, el asistente personal del usuario '{profile.Alias}'""";
         return userData;
 
     }

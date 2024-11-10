@@ -105,7 +105,7 @@ public class Scripts
             };
 
             // Agregar mensajes.
-            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.Take(5), Message.FromUser(prompt)]);
+            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.Take(5)]);
 
             // Esperar respuesta.
             var reply = iaBuilder.Reply();
@@ -169,7 +169,7 @@ public class Scripts
         },
         new BridgeFunction(force)
         {
-            Name = "force",
+            Name = "update",
             Parameters = [
                 new Parameter("type", new("string")),
                 new Parameter("value", new("string"))

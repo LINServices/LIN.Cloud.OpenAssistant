@@ -48,12 +48,12 @@ public class Context(ProfileModel profile)
         Messages.Add(Message.FromUser(prompt));
 
         // Cargar mensajes.
-        modelBuilder.Load([Message.FromSystem(header), .. Messages.TakeLast(5)]);
+        modelBuilder.Load([Message.FromSystem(header), ..Messages]);
 
         // Responder.
         var response = await modelBuilder.Reply();
 
-        // Parsear.
+
         var x = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(response.Content);
 
         foreach (var e in x.Actions)
@@ -75,8 +75,6 @@ public class Context(ProfileModel profile)
                 x.UserText = x2.UserText;
                 x.Commands.AddRange(x2.Commands);
             }
-
-           
 
         }
 
