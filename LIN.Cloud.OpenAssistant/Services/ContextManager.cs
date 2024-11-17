@@ -44,7 +44,6 @@ public class ContextManager
     /// <param name="profile">Modelo del perfil.</param>
     public void Delete(int profile)
     {
-
         // Obtener contexto.
         _context.Remove(profile);
 

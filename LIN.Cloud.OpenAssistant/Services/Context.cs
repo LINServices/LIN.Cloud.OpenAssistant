@@ -1,8 +1,6 @@
 ﻿using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Types.Cloud.OpenAssistant.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace LIN.Cloud.OpenAssistant.Services;
 
@@ -19,6 +17,7 @@ public class Context(ProfileModel profile)
     /// Lista de mensajes.
     /// </summary>
     public List<Message> Messages { get; set; } = [];
+
 
     /// <summary>
     /// Esquema
@@ -48,7 +47,7 @@ public class Context(ProfileModel profile)
         Messages.Add(Message.FromUser(prompt));
 
         // Cargar mensajes.
-        modelBuilder.Load([Message.FromSystem(header), ..Messages]);
+        modelBuilder.Load([Message.FromSystem(header), .. Messages]);
 
         // Responder.
         var response = await modelBuilder.Reply();
@@ -56,7 +55,7 @@ public class Context(ProfileModel profile)
 
         var x = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(response.Content);
 
-        foreach (var e in x.Actions)
+        foreach (var e in x?.Actions ?? [])
         {
             // Aplicación SILF.
             var silfApp = new SILF.Script.App(e);
@@ -69,7 +68,7 @@ public class Context(ProfileModel profile)
 
             var x2 = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(result);
 
-            if (x2 != null && !string.IsNullOrWhiteSpace(x2.UserText))
+            if (x2 != null && !string.IsNullOrWhiteSpace(x2.UserText) && x is not null)
             {
                 // Agregar a la lista de mensajes.
                 x.UserText = x2.UserText;
@@ -78,9 +77,18 @@ public class Context(ProfileModel profile)
 
         }
 
-        Messages.Add(Message.FromAssistant(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
-        x.Actions = [];
-        return (true, x);
+        if (x is not null)
+        {
+            Messages.Add(Message.FromAssistant(Newtonsoft.Json.JsonConvert.SerializeObject(x)));
+            x.Actions = [];
+        }
+
+
+        // Limpiar mensajes
+        if (Messages.Count > 10)
+            Messages = Messages.Skip(2).ToList();
+
+        return (true, x ?? new());
     }
 
 }

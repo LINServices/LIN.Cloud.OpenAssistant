@@ -9,13 +9,13 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
     /// <summary>
     /// Services.
     /// </summary>
-    public DbSet<EmmaService> Services { get; set; }
+    public required DbSet<EmmaService> Services { get; set; }
 
 
     /// <summary>
     /// Profiles.
     /// </summary>
-    public DbSet<ProfileModel> Profiles { get; set; }
+    public required DbSet<ProfileModel> Profiles { get; set; }
 
 
     /// <summary>

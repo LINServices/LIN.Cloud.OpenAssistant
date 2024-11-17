@@ -23,10 +23,10 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     {
 
         // Obtener datos de autenticación.
-        var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
+        var authData = await Access.Auth.Controllers.Authentication.Login(token);
 
         // Validar.
-        if (authData.Response != Types.Responses.Responses.Success)
+        if (authData.Response != Responses.Success)
             return new()
             {
                 Response = Responses.Unauthorized,
@@ -37,7 +37,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         var profile = await profilesData.ReadByAccount(authData.Model.Id);
 
         // Crear perfil.
-        if (profile.Response != Types.Responses.Responses.Success)
+        if (profile.Response != Responses.Success)
         {
 
             // Modelo.
@@ -68,10 +68,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         // Responder.
         (bool isSuccess, EmmaSchemaResponse responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
 
-
-
-
-
         return new()
         {
             Response = isSuccess ? Responses.Success : Responses.Undefined,
@@ -84,7 +80,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     /// <summary>
     /// Asistente.
     /// </summary>
-    /// <param name="request">Request.</param>
     /// <param name="token">Token de acceso.</param>
     [HttpPut]
     public async Task<ResponseBase> Assistant([FromHeader] string token)
@@ -107,8 +102,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         // Obtener header.
         contextManager.Delete(profile.Model.Id);
 
-
-
         return new()
         {
             Response = Responses.Success
@@ -120,7 +113,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     /// <summary>
     /// Asistente.
     /// </summary>
-    /// <param name="request">Request.</param>
     /// <param name="token">Token de acceso.</param>
     [HttpGet]
     public async Task<ReadAllResponse<Message>> Get([FromHeader] string token)
