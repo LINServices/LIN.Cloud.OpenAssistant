@@ -83,7 +83,6 @@ public class Context(ProfileModel profile)
             x.Actions = [];
         }
 
-
         // Limpiar mensajes
         if (Messages.Count > 10)
             Messages = Messages.Skip(2).ToList();

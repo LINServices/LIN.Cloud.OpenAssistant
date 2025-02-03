@@ -10,7 +10,7 @@
     <PackageReference Include="Http.Utils" Version="3.0.0" />
     <PackageReference Include="LIN.Access.Auth" Version="1.7.0" />
     <PackageReference Include="LIN.Access.OpenIA" Version="1.3.0" />
-    <PackageReference Include="SILF.Script" Version="13.2.0" />
+    <PackageReference Include="SILF.Script" Version="13.3.0" />
   </ItemGroup>
 
   <ItemGroup>
