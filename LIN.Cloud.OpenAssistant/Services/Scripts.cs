@@ -105,7 +105,7 @@ public class Scripts
             };
 
             // Agregar mensajes.
-            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.Take(5)]);
+            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.TakeLast(5)]);
 
             // Esperar respuesta.
             var reply = iaBuilder.Reply();
