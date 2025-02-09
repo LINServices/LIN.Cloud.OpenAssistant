@@ -23,7 +23,6 @@ app.UseDataBase();
 // Limite.
 app.UseRateTokenLimit(10, TimeSpan.FromMinutes(1));
 
-ContextManager.Schema = File.ReadAllText("wwwroot/schema.json");    
 LIN.Access.OpenIA.OpenIA.SetKey(builder.Configuration["OpenIA:Key"] ?? "");
 
 app.Run();

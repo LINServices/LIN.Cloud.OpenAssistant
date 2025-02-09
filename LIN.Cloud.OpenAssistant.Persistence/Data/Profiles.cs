@@ -69,5 +69,4 @@ public class Profiles(DataContext context)
         return new(Responses.Undefined);
     }
 
-
 }

@@ -1,6 +1,7 @@
 ﻿using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services;
+using LIN.Cloud.OpenAssistant.Services.Context;
 using LIN.Types.Cloud.OpenAssistant.Api;
 using LIN.Types.Cloud.OpenAssistant.Models;
 using LIN.Types.Responses;
@@ -9,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
-[Route("Emma")]
 public class AssistantController(Profiles profilesData, ContextManager contextManager) : ControllerBase
 {
 
@@ -63,14 +63,14 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         }
 
         // Obtener header.
-        Context context = contextManager.GetOrCreate(profile.Model);
+        UserContext context = contextManager.GetOrCreate(profile.Model);
 
         // Responder.
-        (bool isSuccess, EmmaSchemaResponse responseEmma) = await context.Reply(token, request.Prompt, request.App, profilesData);
+        EmmaSchemaResponse responseEmma = await context.Reply(token, request.Prompt, request.App, profilesData);
 
         return new()
         {
-            Response = isSuccess ? Responses.Success : Responses.Undefined,
+            Response = responseEmma is not null ? Responses.Success : Responses.Undefined,
             Model = responseEmma
         };
 
@@ -122,7 +122,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
 
         // Validar.
-        if (authData.Response != Types.Responses.Responses.Success)
+        if (authData.Response != Responses.Success)
             return new()
             {
                 Response = Responses.Unauthorized,
@@ -133,7 +133,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         var profile = await profilesData.ReadByAccount(authData.Model.Id);
 
         // Obtener header.
-        Context context = contextManager.GetOrCreate(profile.Model);
+        UserContext context = contextManager.GetOrCreate(profile.Model);
 
         return new()
         {

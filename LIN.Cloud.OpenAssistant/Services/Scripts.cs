@@ -1,7 +1,6 @@
-﻿using Azure;
-using LIN.Access.OpenIA.Models;
+﻿using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
-using LIN.Types.Cloud.OpenAssistant.Models;
+using LIN.Cloud.OpenAssistant.Services.Context;
 using LIN.Types.Responses;
 using Newtonsoft.Json;
 using SILF.Script;
@@ -49,7 +48,7 @@ public class Scripts
     /// <summary>
     /// Construye las funciones
     /// </summary>
-    public static List<IFunction> Build(string token, int profile, string prompt, string app, Profiles profiles, Context context)
+    public static List<IFunction> Build(string token, string prompt, string app, Profiles profiles, UserContext context)
     {
 
         // Acciones.
@@ -98,17 +97,10 @@ public class Scripts
             // Obtener la respuesta.
             var appResponse = responseTask.Result.Model.ToString() ?? "";
 
-            // Builder IA.
-            Access.OpenIA.IAModelBuilder iaBuilder = new()
-            {
-                Schema = context.Schema
-            };
-
-            // Agregar mensajes.
-            iaBuilder.Load([Message.FromSystem(appResponse), .. context.Messages.TakeLast(5)]);
+            var responder = context.GetResponder();
 
             // Esperar respuesta.
-            var reply = iaBuilder.Reply();
+            var reply = responder.Reply(appResponse, token, app, context, profiles);
             reply.Wait();
 
             return new FuncContext()
@@ -118,7 +110,7 @@ public class Scripts
                 Value = new SILFClassObject()
                 {
                     Tipo = new("string"),
-                    Value = reply.Result.Content,
+                    Value = reply.Result,
                 }
             };
         }
@@ -137,7 +129,7 @@ public class Scripts
                     {
                         _ = profiles.Update(new()
                         {
-                            Id = profile,
+                            Id = context.ProfileModel.Id,
                             Alias = value,
                         });
                         break;
@@ -146,7 +138,7 @@ public class Scripts
                     {
                         _ = profiles.Update(new()
                         {
-                            Id = profile,
+                            Id = context.ProfileModel.Id,
                             City = value,
                         });
                         break;

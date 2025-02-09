@@ -9,6 +9,7 @@ namespace LIN.Cloud.OpenAssistant.Persistence.Extensions;
 
 public static class DataExtensions
 {
+
     /// <summary>
     /// Agregar servicios de persistence.
     /// </summary>
@@ -28,7 +29,6 @@ public static class DataExtensions
     }
 
 
-
     /// <summary>
     /// Habilitar el servicio de base de datos.
     /// </summary>
@@ -46,6 +46,5 @@ public static class DataExtensions
         }
         return app;
     }
-
 
 }

@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\AccesoAPI\LIN.Access.Gemini\LIN.Access.Gemini.csproj" />
     <ProjectReference Include="..\LIN.Cloud.OpenAssistant.Persistence\LIN.Cloud.OpenAssistant.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Gemini\" />
   </ItemGroup>
 
 </Project>
