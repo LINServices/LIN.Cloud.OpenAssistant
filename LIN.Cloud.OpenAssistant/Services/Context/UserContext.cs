@@ -1,5 +1,6 @@
 ﻿using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
+using LIN.Types.Cloud.OpenAssistant.Abstractions;
 using LIN.Types.Cloud.OpenAssistant.Models;
 using System.Text.Json;
 

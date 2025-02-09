@@ -24,5 +24,6 @@ app.UseDataBase();
 app.UseRateTokenLimit(10, TimeSpan.FromMinutes(1));
 
 LIN.Access.OpenIA.OpenIA.SetKey(builder.Configuration["OpenIA:Key"] ?? "");
+LIN.Access.Gemini.Gemini.SetKey(builder.Configuration["Gemini:Key"] ?? "");
 
 app.Run();

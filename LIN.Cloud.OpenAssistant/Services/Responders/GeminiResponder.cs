@@ -1,6 +1,8 @@
-﻿using LIN.Access.OpenIA.Models;
+﻿using LIN.Access.Gemini;
+using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services.Context;
+using LIN.Types.Cloud.OpenAssistant.Abstractions;
 using LIN.Types.Cloud.OpenAssistant.Models;
 
 namespace LIN.Cloud.OpenAssistant.Services.Responders;
@@ -19,24 +21,20 @@ public class GeminiResponder : IIAResponder
     public async Task<string?> Reply(string system, string token, string currentApp, UserContext context, Profiles profiles)
     {
 
-        List<dynamic> data = new List<dynamic>();
-
-        foreach (var e in context.Messages)
+        // Model builder.
+        IAModelBuilder modelBuilder = new()
         {
-            data.Add(new
-            {
-                role = e.Rol == Roles.User ? "user" : "model",
-                parts = new object[] {
-                    new{ text = e.Content}
-                }
-            });
-        }
+            Schema = File.ReadAllText("wwwroot/schema.gemini.json")
+        };
+
+        // Cargar mensajes.
+        modelBuilder.Load([Message.FromSystem(system), .. context.Messages]);
 
         // Responder.
-        var response = await LIN.Access.Gemini.Class1.Send(system, data);
+        var response = await modelBuilder.Reply();
 
         // Obtener la respuesta de la IA.
-        var geminiResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(response.Candidates[0].Content.Parts[0].Text);
+        var geminiResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<EmmaSchemaResponse>(response.Content);
 
         foreach (var action in geminiResponse?.Actions ?? [])
         {

@@ -1,6 +1,8 @@
-﻿using LIN.Access.OpenIA.Models;
+﻿using LIN.Access.OpenIA;
+using LIN.Access.OpenIA.Models;
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services.Context;
+using LIN.Types.Cloud.OpenAssistant.Abstractions;
 using LIN.Types.Cloud.OpenAssistant.Models;
 
 namespace LIN.Cloud.OpenAssistant.Services.Responders;
@@ -20,7 +22,7 @@ public class OpenIAResponder : IIAResponder
     {
 
         // Model builder.
-        Access.OpenIA.IAModelBuilder modelBuilder = new()
+        IAModelBuilder modelBuilder = new()
         {
             Schema = File.ReadAllText("wwwroot/schema.json")
         };

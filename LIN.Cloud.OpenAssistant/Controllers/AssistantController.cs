@@ -2,6 +2,7 @@
 using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services;
 using LIN.Cloud.OpenAssistant.Services.Context;
+using LIN.Types.Cloud.OpenAssistant.Abstractions;
 using LIN.Types.Cloud.OpenAssistant.Api;
 using LIN.Types.Cloud.OpenAssistant.Models;
 using LIN.Types.Responses;
