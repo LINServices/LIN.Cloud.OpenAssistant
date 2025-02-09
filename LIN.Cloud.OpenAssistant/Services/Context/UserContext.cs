@@ -1,5 +1,4 @@
-﻿using LIN.Access.OpenIA.Models;
-using LIN.Cloud.OpenAssistant.Persistence.Data;
+﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Types.Cloud.OpenAssistant.Abstractions;
 using LIN.Types.Cloud.OpenAssistant.Models;
 using System.Text.Json;
@@ -22,7 +21,7 @@ public class UserContext(ProfileModel profile)
     /// <summary>
     /// Modelo de IA.
     /// </summary>
-    public IAModel Model { get; set; } = IAModel.Gemini;
+    public IAModel? Model { get; private set; } = null;
 
 
     /// <summary>
@@ -34,6 +33,8 @@ public class UserContext(ProfileModel profile)
     /// <param name="profileService">Servicio de datos de usuario.</param>
     public async Task<EmmaSchemaResponse?> Reply(string token, string prompt, string contextApp, Profiles profileService)
     {
+        // Iniciar.
+        Start();
 
         // Obtener texto de comportamiento personalizado.
         string systemMessage = DynamicMessageManager.GetHeader(ProfileModel);
@@ -72,6 +73,19 @@ public class UserContext(ProfileModel profile)
                 break;
         }
         return null;
+    }
+
+    private void Start()
+    {
+        if (Model is not null)
+            return;
+        try
+        {
+            Model = (IAModel)ProfileModel.Model;
+            return;
+        }
+        catch { }
+        Model = IAModel.OpenIA;
     }
 
 }
