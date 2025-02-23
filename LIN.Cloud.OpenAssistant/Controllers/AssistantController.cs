@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
+[Route("emma")]
 public class AssistantController(Profiles profilesData, ContextManager contextManager) : ControllerBase
 {
 
@@ -59,7 +60,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
                     Response = Responses.Undefined,
                 };
 
-            model.Id = response.LastID;
+            model.Id = response.LastId;
             profile.Model = model;
         }
 
