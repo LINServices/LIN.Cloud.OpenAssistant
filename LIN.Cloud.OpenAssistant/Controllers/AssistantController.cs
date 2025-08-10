@@ -1,5 +1,4 @@
-﻿using LIN.Access.OpenIA.Models;
-using LIN.Cloud.OpenAssistant.Persistence.Data;
+﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services;
 using LIN.Cloud.OpenAssistant.Services.Context;
 using LIN.Types.Cloud.OpenAssistant.Abstractions;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
-[Route("emma")]
 public class AssistantController(Profiles profilesData, ContextManager contextManager) : ControllerBase
 {
 
@@ -23,7 +21,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
     [HttpPost]
     public async Task<ReadOneResponse<EmmaSchemaResponse>> Assistant([FromBody] AssistantRequest request, [FromHeader] string token)
     {
-
         // Obtener datos de autenticación.
         var authData = await Access.Auth.Controllers.Authentication.Login(token);
 
@@ -41,7 +38,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         // Crear perfil.
         if (profile.Response != Responses.Success)
         {
-
             // Modelo.
             ProfileModel model = new()
             {
@@ -75,7 +71,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
             Response = responseEmma is not null ? Responses.Success : Responses.Undefined,
             Model = responseEmma
         };
-
     }
 
 
@@ -107,40 +102,6 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         return new()
         {
             Response = Responses.Success
-        };
-
-    }
-
-
-    /// <summary>
-    /// Asistente.
-    /// </summary>
-    /// <param name="token">Token de acceso.</param>
-    [HttpGet]
-    public async Task<ReadAllResponse<Message>> Get([FromHeader] string token)
-    {
-
-        // Obtener datos de autenticación.
-        var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
-
-        // Validar.
-        if (authData.Response != Responses.Success)
-            return new()
-            {
-                Response = Responses.Unauthorized,
-                Message = "No tienes autorización."
-            };
-
-        // Obtener perfil.
-        var profile = await profilesData.ReadByAccount(authData.Model.Id);
-
-        // Obtener header.
-        UserContext context = contextManager.GetOrCreate(profile.Model);
-
-        return new()
-        {
-            Response = Responses.Success,
-            Models = context.Messages
         };
 
     }

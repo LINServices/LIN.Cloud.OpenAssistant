@@ -7,14 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Http.Utils" Version="3.1.0" />
-    <PackageReference Include="LIN.Access.Auth" Version="1.8.0" />
-    <PackageReference Include="LIN.Access.OpenIA" Version="1.5.0" />
+    <PackageReference Include="Http.Utils" Version="4.7.0" />
+    <PackageReference Include="LIN.Access.Auth" Version="4.2.0" />
+    <PackageReference Include="LIN.Access.OpenIA" Version="4.1.0" />
     <PackageReference Include="SILF.Script" Version="13.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\AccesoAPI\LIN.Access.Gemini\LIN.Access.Gemini.csproj" />
+    <ProjectReference Include="..\..\..\AccesoAPI\LIN.OpenAI.Connector\LIN.OpenAI.Connector.csproj" />
     <ProjectReference Include="..\LIN.Cloud.OpenAssistant.Persistence\LIN.Cloud.OpenAssistant.Persistence.csproj" />
   </ItemGroup>
 

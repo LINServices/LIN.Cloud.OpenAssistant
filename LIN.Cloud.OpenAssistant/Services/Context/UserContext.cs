@@ -1,7 +1,7 @@
 ﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
-using LIN.Types.Cloud.OpenAssistant.Abstractions;
+using LIN.Cloud.OpenAssistant.Services.Assistants;
+using LIN.OpenAI.Connector.Models;
 using LIN.Types.Cloud.OpenAssistant.Models;
-using System.Text.Json;
 
 namespace LIN.Cloud.OpenAssistant.Services.Context;
 
@@ -16,7 +16,7 @@ public class UserContext(ProfileModel profile)
     /// <summary>
     /// Lista de mensajes.
     /// </summary>
-    public List<Message> Messages { get; set; } = [];
+    public List<MessageModel> Messages { get; set; } = [];
 
     /// <summary>
     /// Modelo de IA.
@@ -39,41 +39,41 @@ public class UserContext(ProfileModel profile)
         // Obtener texto de comportamiento personalizado.
         string systemMessage = DynamicMessageManager.GetHeader(ProfileModel);
 
-        // Respondedor.
-        Responders.IIAResponder? responder = GetResponder();
-
         // Agregar prompt del usuario.
-        Messages.Add(Message.FromUser(prompt));
-
-        // Si no hay manejador.
-        if (responder is null)
-            return null;
-
-        // Responder.
-        EmmaSchemaResponse? reply = JsonSerializer.Deserialize<EmmaSchemaResponse>(await responder.Reply(systemMessage, token, contextApp, this, profileService));
-
-        // Limpiar mensajes
-        if (Messages.Count > 10)
-            Messages = Messages.Skip(2).ToList();
-
-        return reply;
-    }
-
-
-
-    public Responders.IIAResponder? GetResponder()
-    {
-        switch (Model)
+        Messages.Add(new MessageModel()
         {
-            case IAModel.OpenIA:
-                return new Responders.OpenIAResponder();
-            case IAModel.Gemini:
-                return new Responders.GeminiResponder();
-            default:
-                break;
-        }
-        return null;
+            role = "user",
+            content = prompt,
+        });
+
+        var client = new LIN.OpenAI.Connector.Client()
+        {
+            Messages = [new MessageModel() {
+                role = "system",
+                content = systemMessage
+            }, ..Messages],
+            ToolFunctions = OpenAIConnector.Toolsl,
+            Tools = OpenAIConnector.Tools,
+        };
+
+        var response = await client.SendRequest();
+
+        Messages.AddRange(response.GeneratedMessages);
+
+        Messages.Add(new MessageModel()
+        {
+            role = "assistant",
+            content = response.LastMessage
+        });
+
+        return new()
+        {
+            UserText = response.LastMessage,
+        };
     }
+
+
+
 
     private void Start()
     {

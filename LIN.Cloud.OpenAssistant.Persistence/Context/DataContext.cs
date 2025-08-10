@@ -5,18 +5,15 @@ namespace LIN.Cloud.OpenAssistant.Persistence.Context;
 
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-
     /// <summary>
     /// Services.
     /// </summary>
     public required DbSet<EmmaService> Services { get; set; }
 
-
     /// <summary>
     /// Profiles.
     /// </summary>
     public required DbSet<ProfileModel> Profiles { get; set; }
-
 
     /// <summary>
     /// On Creating.
@@ -38,5 +35,4 @@ public class DataContext(DbContextOptions<DataContext> options) : DbContext(opti
 
         base.OnModelCreating(modelBuilder);
     }
-
 }

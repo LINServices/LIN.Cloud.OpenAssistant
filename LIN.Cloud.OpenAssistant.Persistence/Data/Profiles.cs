@@ -6,7 +6,6 @@ namespace LIN.Cloud.OpenAssistant.Persistence.Data;
 
 public class Profiles(DataContext context)
 {
-
     /// <summary>
     /// Crear perfil.
     /// </summary>
@@ -24,7 +23,6 @@ public class Profiles(DataContext context)
         }
         return new(Responses.Undefined);
     }
-
 
     /// <summary>
     /// Obtener perfil por medio de la cuenta.
@@ -46,7 +44,6 @@ public class Profiles(DataContext context)
         }
         return new(Responses.Undefined);
     }
-
 
     /// <summary>
     /// Actualizar perfil.  

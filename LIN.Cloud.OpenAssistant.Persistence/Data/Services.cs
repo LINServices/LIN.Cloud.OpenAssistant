@@ -25,7 +25,6 @@ public class Services(DataContext context)
         return new(Responses.Undefined);
     }
 
-
     /// <summary>
     /// Obtener servicios
     /// </summary>
@@ -33,7 +32,6 @@ public class Services(DataContext context)
     {
         try
         {
-
             // Obtener los servicios.
             var services = await (from s in context.Services
                                   select new EmmaService
@@ -51,7 +49,6 @@ public class Services(DataContext context)
         return new(Responses.Undefined);
     }
 
-
     /// <summary>
     /// Obtener un servicio
     /// </summary>
@@ -59,7 +56,6 @@ public class Services(DataContext context)
     {
         try
         {
-
             // Obtener los servicios.
             var service = await (from s in context.Services
                                   where s.Name == name

@@ -17,7 +17,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.UseLINHttp();
+app.UseLINHttp(useGateway: true);
 app.UseDataBase();
 
 // Limite.
@@ -25,5 +25,7 @@ app.UseRateTokenLimit(10, TimeSpan.FromMinutes(1));
 
 LIN.Access.OpenIA.OpenIA.SetKey(builder.Configuration["OpenIA:Key"] ?? "");
 LIN.Access.Gemini.Gemini.SetKey(builder.Configuration["Gemini:Key"] ?? "");
+
+LIN.OpenAI.Connector.Client.ApiKey = builder.Configuration["OpenIA:Key"] ?? "";
 
 app.Run();
