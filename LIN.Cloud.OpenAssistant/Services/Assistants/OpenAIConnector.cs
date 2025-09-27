@@ -5,8 +5,6 @@ namespace LIN.Cloud.OpenAssistant.Services.Assistants;
 
 public class OpenAIConnector
 {
-
-
     public static List<FunctionModel> Tools = [
         new FunctionModel
         {
