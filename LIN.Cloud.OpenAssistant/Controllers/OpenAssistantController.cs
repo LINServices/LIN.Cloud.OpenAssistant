@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
-public class AssistantController(Profiles profilesData, ContextManager contextManager, IGptOrchestrator orchestrator) : ControllerBase
+public class OpenAssistantController(Profiles profilesData, ContextManager contextManager, IGptOrchestrator orchestrator) : ControllerBase
 {
 
     /// <summary>
