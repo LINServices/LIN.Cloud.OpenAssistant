@@ -1,7 +1,7 @@
 ﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services;
 using LIN.Cloud.OpenAssistant.Services.Context;
-using LIN.Types.Cloud.OpenAssistant.Abstractions;
+using LIN.OpenAI.Connector;
 using LIN.Types.Cloud.OpenAssistant.Api;
 using LIN.Types.Cloud.OpenAssistant.Models;
 using LIN.Types.Responses;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
-public class AssistantController(Profiles profilesData, ContextManager contextManager) : ControllerBase
+public class AssistantController(Profiles profilesData, ContextManager contextManager, IGptOrchestrator orchestrator) : ControllerBase
 {
 
     /// <summary>
@@ -43,7 +43,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
             {
                 AccountId = authData.Model.Id,
                 Alias = authData.Model.Name,
-                City = "Bogotá"
+                City = "Medellin"
             };
 
             // Crear perfil.
@@ -61,7 +61,7 @@ public class AssistantController(Profiles profilesData, ContextManager contextMa
         }
 
         // Obtener header.
-        UserContext context = contextManager.GetOrCreate(profile.Model);
+        UserContext context = contextManager.GetOrCreate(profile.Model, orchestrator);
 
         // Responder.
         EmmaSchemaResponse responseEmma = await context.Reply(token, request.Prompt, request.App, profilesData);

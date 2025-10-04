@@ -1,11 +1,12 @@
 ﻿using LIN.Cloud.OpenAssistant.Persistence.Data;
 using LIN.Cloud.OpenAssistant.Services.Assistants;
+using LIN.OpenAI.Connector;
 using LIN.OpenAI.Connector.Models;
 using LIN.Types.Cloud.OpenAssistant.Models;
 
 namespace LIN.Cloud.OpenAssistant.Services.Context;
 
-public class UserContext(ProfileModel profile)
+public class UserContext(ProfileModel profile, IGptOrchestrator orchestrator)
 {
 
     /// <summary>
@@ -16,13 +17,7 @@ public class UserContext(ProfileModel profile)
     /// <summary>
     /// Lista de mensajes.
     /// </summary>
-    public List<MessageModel> Messages { get; set; } = [];
-
-    /// <summary>
-    /// Modelo de IA.
-    /// </summary>
-    public IAModel? Model { get; private set; } = null;
-
+    public List<ChatMessage> Messages { get; set; } = [];
 
     /// <summary>
     /// Responder.
@@ -33,59 +28,20 @@ public class UserContext(ProfileModel profile)
     /// <param name="profileService">Servicio de datos de usuario.</param>
     public async Task<EmmaSchemaResponse?> Reply(string token, string prompt, string contextApp, Profiles profileService)
     {
-        // Iniciar.
-        Start();
-
         // Obtener texto de comportamiento personalizado.
         string systemMessage = DynamicMessageManager.GetHeader(ProfileModel);
 
         // Agregar prompt del usuario.
-        Messages.Add(new MessageModel()
-        {
-            role = "user",
-            content = prompt,
-        });
+        Messages.Add(ChatMessage.User(prompt));
 
-        var client = new LIN.OpenAI.Connector.Client()
-        {
-            Messages = [new MessageModel() {
-                role = "system",
-                content = systemMessage
-            }, ..Messages],
-            ToolFunctions = OpenAIConnector.Toolsl,
-            Tools = OpenAIConnector.Tools,
-        };
+        // Ejecutar orquestador.
+        var result = await orchestrator.RunAsync(token, [ChatMessage.System(systemMessage), .. Messages], OpenAIConnector.Tools);
 
-        var response = await client.SendRequest();
-
-        Messages.AddRange(response.GeneratedMessages);
-
-        Messages.Add(new MessageModel()
-        {
-            role = "assistant",
-            content = response.LastMessage
-        });
+        Messages.Add(result.FinalAssistant);
 
         return new()
         {
-            UserText = response.LastMessage,
+            UserText = result.FinalAssistant.content ?? string.Empty,
         };
     }
-
-
-
-
-    private void Start()
-    {
-        if (Model is not null)
-            return;
-        try
-        {
-            Model = (IAModel)ProfileModel.Model;
-            return;
-        }
-        catch { }
-        Model = IAModel.OpenIA;
-    }
-
 }

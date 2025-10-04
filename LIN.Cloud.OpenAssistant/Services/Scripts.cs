@@ -1,13 +1,8 @@
-﻿using LIN.Access.OpenIA.Models;
-using LIN.Cloud.OpenAssistant.Persistence.Data;
-using LIN.Cloud.OpenAssistant.Services.Context;
-using LIN.Types.Responses;
+﻿using LIN.Types.Responses;
 using Newtonsoft.Json;
 using SILF.Script;
-using SILF.Script.Elements;
 using SILF.Script.Elements.Functions;
 using SILF.Script.Interfaces;
-using SILF.Script.Objects;
 using SILF.Script.Runtime;
 
 namespace LIN.Cloud.OpenAssistant.Services;

@@ -5,41 +5,42 @@ namespace LIN.Cloud.OpenAssistant.Services.Assistants;
 
 public class OpenAIConnector
 {
-    public static List<FunctionModel> Tools = [
-        new FunctionModel
-        {
-            Function = new FunctionDetails
-            {
-                Name = "weather",
-                Description = "Obtener el clima de una ciudad",
-                Parameters = new FunctionParameters
-                {
-                    Properties =
-                    {
-                       ["city"] = new PropertyField { Type = "string", Description = "Nombre de la ciudad para buscar el clima" }
-                    },
-                    Required = new[] { "city" }
-                }
-            }
-        }
-    ];
 
-
-    public static Dictionary<string, Func<JsonObject, Task<string>>> Toolsl = [];
+    public static List<ToolDefinition> Tools = [];
 
     static OpenAIConnector()
     {
-        Toolsl.Add("weather", async (JsonObject parameters) =>
-        {
-            var city = parameters["city"]?.GetValue<string>();
-            if (string.IsNullOrWhiteSpace(city))
-                return "Ciudad no proporcionada.";
-            // Aquí iría la lógica para obtener el clima real.
-            await Task.Delay(500); // Simular una llamada asíncrona.
-            return $"El clima en {city} es soleado con 25°C.";
-        });
+        Tools.Add(ToolDefinition.Create(
+            name: "weather",
+            description: "Obtener el clima de una ciudad",
+            parameters: new JsonObject
+            {
+                ["type"] = "object",
+                ["properties"] = new JsonObject
+                {
+                    ["city"] = new JsonObject { ["type"] = "string", ["description"] = "Nombre de la ciudad" }
+                },
+                ["required"] = new JsonArray("city")
+            },
+            callback: async (token, args) =>
+            {
+                string city = args["city"]!.GetValue<string>();
+                await Task.Delay(10); // simulación I/O
+                return new JsonObject { ["city"] = city, ["value"] = "17 grados" };
+            }
+        ));
+
+        Tools.Add(ToolDefinition.Create(
+            name: "get_contacts",
+            description: "Obtener la información de los contactos",
+            parameters: new JsonObject
+            {
+                ["type"] = "object",
+                ["properties"] = new JsonObject
+                {
+                }
+            },
+            callback: Connector.FindContacts
+        ));
     }
-
-
-
 }

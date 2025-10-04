@@ -1,7 +1,7 @@
 using Http.Extensions;
+using LIN.Access.Auth;
 using LIN.Cloud.OpenAssistant.Persistence.Extensions;
 using LIN.Cloud.OpenAssistant.Services;
-using LIN.Access.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +10,7 @@ builder.Services.AddLINHttp();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddSingleton<ContextManager, ContextManager>();
 builder.Services.AddAuthenticationService();
+builder.Services.AddOpenIAConnector(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,10 +21,5 @@ app.UseDataBase();
 
 // Limite.
 app.UseRateTokenLimit(10, TimeSpan.FromMinutes(1));
-
-LIN.Access.OpenIA.OpenIA.SetKey(builder.Configuration["OpenIA:Key"] ?? "");
-LIN.Access.Gemini.Gemini.SetKey(builder.Configuration["Gemini:Key"] ?? "");
-
-LIN.OpenAI.Connector.Client.ApiKey = builder.Configuration["OpenIA:Key"] ?? "";
 
 app.Run();
