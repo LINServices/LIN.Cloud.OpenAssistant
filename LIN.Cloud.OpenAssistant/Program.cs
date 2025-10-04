@@ -15,7 +15,6 @@ builder.Services.AddOpenIAConnector(builder.Configuration);
 var app = builder.Build();
 
 app.UseLINHttp(useGateway: true);
-app.UseAuthorization();
 app.MapControllers();
 app.UseDataBase();
 
