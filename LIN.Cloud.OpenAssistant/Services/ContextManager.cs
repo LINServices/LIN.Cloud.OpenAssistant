@@ -6,12 +6,10 @@ namespace LIN.Cloud.OpenAssistant.Services;
 
 public class ContextManager
 {
-
     /// <summary>
     /// Lista de contextos.
     /// </summary>
     private readonly Dictionary<int, UserContext> _context = [];
-
 
     /// <summary>
     /// Obtener o crear un contexto.
@@ -31,7 +29,6 @@ public class ContextManager
         context.ProfileModel = profile;
         return context;
     }
-
 
     /// <summary>
     /// Obtener o crear un contexto.

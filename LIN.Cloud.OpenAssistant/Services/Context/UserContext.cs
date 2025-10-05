@@ -26,7 +26,7 @@ public class UserContext(ProfileModel profile, IGptOrchestrator orchestrator)
     /// <param name="prompt">Entrada del usuario.</param>
     /// <param name="contextApp">Aplicación actual del usuario.</param>
     /// <param name="profileService">Servicio de datos de usuario.</param>
-    public async Task<EmmaSchemaResponse?> Reply(string token, string prompt, string contextApp, Profiles profileService)
+    public async Task<EmmaSchemaResponse> Reply(string token, string prompt, string contextApp, Profiles profileService, IServiceProvider scope)
     {
         // Obtener texto de comportamiento personalizado.
         string systemMessage = DynamicMessageManager.GetHeader(ProfileModel);
@@ -35,8 +35,12 @@ public class UserContext(ProfileModel profile, IGptOrchestrator orchestrator)
         Messages.Add(ChatMessage.User(prompt));
 
         // Ejecutar orquestador.
-        var result = await orchestrator.RunAsync(token, [ChatMessage.System(systemMessage), .. Messages], OpenAIConnector.Tools);
+        var result = await orchestrator.RunAsync(token, [ChatMessage.System(systemMessage), .. Messages], [.. OpenAIConnector.Tools, .. Connector.GetBySession(scope)]);
 
+        if (result is null || result.FinalAssistant is null)
+            return new();
+
+        // Agregar el mensaje de respuesta.
         Messages.Add(result.FinalAssistant);
 
         return new()

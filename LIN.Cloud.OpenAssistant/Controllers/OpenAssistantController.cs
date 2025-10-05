@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace LIN.Cloud.OpenAssistant.Controllers;
 
 [Route("[Controller]")]
-public class OpenAssistantController(Profiles profilesData, ContextManager contextManager, IGptOrchestrator orchestrator) : ControllerBase
+public class OpenAssistantController(Profiles profilesData, ContextManager contextManager, IGptOrchestrator orchestrator, IServiceProvider serviceProvider) : ControllerBase
 {
-
     /// <summary>
     /// Asistente.
     /// </summary>
@@ -43,7 +42,7 @@ public class OpenAssistantController(Profiles profilesData, ContextManager conte
             {
                 AccountId = authData.Model.Id,
                 Alias = authData.Model.Name,
-                City = "Medellin"
+                City = "Medellín"
             };
 
             // Crear perfil.
@@ -64,15 +63,13 @@ public class OpenAssistantController(Profiles profilesData, ContextManager conte
         UserContext context = contextManager.GetOrCreate(profile.Model, orchestrator);
 
         // Responder.
-        EmmaSchemaResponse responseEmma = await context.Reply(token, request.Prompt, request.App, profilesData);
+        EmmaSchemaResponse responseEmma = await context.Reply(token, request.Prompt, request.App, profilesData, serviceProvider);
 
-        return new()
+        return new(responseEmma is not null ? Responses.Success : Responses.Undefined)
         {
-            Response = responseEmma is not null ? Responses.Success : Responses.Undefined,
-            Model = responseEmma
+            Model = responseEmma!
         };
     }
-
 
     /// <summary>
     /// Asistente.
@@ -81,12 +78,11 @@ public class OpenAssistantController(Profiles profilesData, ContextManager conte
     [HttpPut]
     public async Task<ResponseBase> Assistant([FromHeader] string token)
     {
-
         // Obtener datos de autenticación.
         var authData = await LIN.Access.Auth.Controllers.Authentication.Login(token);
 
         // Validar.
-        if (authData.Response != Types.Responses.Responses.Success)
+        if (authData.Response != Responses.Success)
             return new()
             {
                 Response = Responses.Unauthorized,
@@ -103,7 +99,6 @@ public class OpenAssistantController(Profiles profilesData, ContextManager conte
         {
             Response = Responses.Success
         };
-
     }
 
 }

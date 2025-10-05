@@ -42,5 +42,18 @@ public class OpenAIConnector
             },
             callback: Connector.FindContacts
         ));
+
+        Tools.Add(ToolDefinition.Create(
+           name: "get_notes",
+           description: "Obtener notas del usuario",
+           parameters: new JsonObject
+           {
+               ["type"] = "object",
+               ["properties"] = new JsonObject
+               {
+               }
+           },
+           callback: Connector.FindNotes
+       ));
     }
 }
